@@ -11,25 +11,36 @@ class Eventnum extends StatefulWidget {
 }
 
 class _EventnumState extends State<Eventnum> {
-  void openMap(double latitude, double longitude) async {
-  final Uri googleMapsUrl = Uri.parse('https://www.google.com/maps/search/?api=1&query=$latitude,$longitude');
+  late final Uri mapUrl;
+  late final Future<bool> _canLaunchFuture;
 
-  if (await canLaunchUrl(googleMapsUrl)) {
-    await launchUrl(googleMapsUrl, mode: LaunchMode.externalApplication);
-  } else {
-    throw 'Could not open the map.';
+  @override
+  void initState() {
+    super.initState();
+    final even = eventdetails[widget.index];
+    mapUrl = Uri.parse('https://www.google.com/maps/search/?api=1&query=${even.latitu},${even.longi}');
+    _canLaunchFuture = canLaunchUrl(mapUrl);
   }
-}
+
+  Future<void> openMap() async {
+    if (await canLaunchUrl(mapUrl)) {
+      await launchUrl(mapUrl, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not open the map.';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     final even = eventdetails[widget.index];
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightBlue.shade100,
         foregroundColor: Colors.white,
-        title:Text(even.eventname,style: TextStyle(fontWeight: FontWeight.w700,fontSize: 24))
+        title: Text(even.eventname, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 24)),
       ),
       body: Stack(
         children: [
@@ -41,16 +52,7 @@ class _EventnumState extends State<Eventnum> {
               SizedBox(
                 width: screenWidth,
                 height: screenHeight / 3,
-                child: Stack(
-                  children: [
-                    Positioned(
-                      top: 0,
-                      left: 0,
-                      height: screenHeight / 3,
-                      child: Image.asset(even.image, fit: BoxFit.cover),
-                    ),
-                  ],
-                ),
+                child: Image.asset(even.image, fit: BoxFit.cover),
               ),
               Flexible(
                 child: Padding(
@@ -60,49 +62,37 @@ class _EventnumState extends State<Eventnum> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 25),
-                      Text(
-                        'Title: ${even.eventname}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 24,
-                        ),
-                      ),
+                      Text('Title: ${even.eventname}', style: TextStyle(fontSize: 24)),
                       SizedBox(height: 5),
-                      Text(
-                        'Date: ${even.eventdate}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 24,
-                        ),
-                      ),
+                      Text('Date: ${even.eventdate}', style: TextStyle(fontSize: 24)),
                       SizedBox(height: 5),
-                      Text(
-                        'Location: ${even.eventlocation}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 24,
-                        ),
-                      ),
+                      Text('Location: ${even.eventlocation}', style: TextStyle(fontSize: 24)),
                       SizedBox(height: 5),
-                      Text(
-                        'Description: ${even.eventdes}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 24,
-                        ),
-                      ),
+                      Text('Description: ${even.eventdes}', style: TextStyle(fontSize: 24)),
                     ],
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    openMap(even.latitu,even.longi);
-                  },
-                  child: Text('View Location'),
-                ),
+              FutureBuilder<bool>(
+                future: _canLaunchFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasData && snapshot.data == true) {
+                    return Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: ElevatedButton(
+                        onPressed: openMap,
+                        child: Text('View Location'),
+                      ),
+                    );
+                  } else {
+                    return Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text('Map cannot be opened on this device.'),
+                    );
+                  }
+                },
               ),
             ],
           ),
