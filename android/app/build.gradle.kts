@@ -2,7 +2,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("dev.flutter.flutter-gradle-plugin")
-   // id("com.google.gms.google-services") // ✅ Needed for Firebase
+    // id("com.google.gms.google-services") // ✅ Uncomment if using Firebase
 }
 
 android {
@@ -25,6 +25,10 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        // ✅ Add this block to securely pass MAPS_API_KEY to AndroidManifest
+        val MAPS_API_KEY: String = project.findProperty("MAPS_API_KEY") as String? ?: ""
+        manifestPlaceholders["MAPS_API_KEY"] = MAPS_API_KEY
     }
 
     buildTypes {
@@ -39,7 +43,8 @@ flutter {
 }
 
 dependencies {
-    // implementation("com.google.firebase:firebase-analytics") // ✅ Optional: for Analytics
-    // implementation("com.google.firebase:firebase-auth")       // ✅ For Firebase Auth
-    // implementation("com.google.firebase:firebase-firestore")  // ✅ For Firestore
+    // ✅ Uncomment if you use Firebase services
+    // implementation("com.google.firebase:firebase-analytics")
+    // implementation("com.google.firebase:firebase-auth")
+    // implementation("com.google.firebase:firebase-firestore")
 }
