@@ -14,7 +14,7 @@ class _FrontpageState extends State<Frontpage> {
       body: Stack(
         children: [
           SizedBox.expand(
-            child: Image.asset('background.jpg', fit: BoxFit.fill),
+            child: Image.asset('assets/background.jpg', fit: BoxFit.fill),
           ),
           Center(
             child: Column(
