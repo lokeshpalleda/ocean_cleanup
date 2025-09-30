@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'eventnum_details.dart';
+import '../models/eventnum_details.dart';
 
 class Eventnum extends StatefulWidget {
   final int index;

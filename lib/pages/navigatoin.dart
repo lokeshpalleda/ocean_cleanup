@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ocean_clean/content.dart';
-import 'package:ocean_clean/home.dart';
-import 'package:ocean_clean/profile.dart';
+import 'package:ocean_clean/pages/successstories.dart';
+import 'package:ocean_clean/pages/homescreen.dart';
+import 'package:ocean_clean/pages/profile_Page.dart';
 
 class Screen extends StatefulWidget {
   const Screen({super.key});

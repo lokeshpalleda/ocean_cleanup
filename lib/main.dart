@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ocean_clean/spalsh_screen.dart';
-//import 'firebase_options.dart';
-//import 'package:firebase_core/firebase_core.dart';
+import 'package:ocean_clean/splash/splash_screen.dart';
 
 void main() async {
   

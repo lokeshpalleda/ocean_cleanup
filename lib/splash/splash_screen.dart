@@ -1,7 +1,7 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:ocean_clean/screen.dart';
+import 'package:ocean_clean/login_credentials/auth_screen.dart';
 
 class Splashscreen extends StatelessWidget {
   const Splashscreen({super.key});
@@ -30,7 +30,7 @@ class Splashscreen extends StatelessWidget {
       duration: 3500,
       splashIconSize: 300,
       backgroundColor: Colors.white,
-      nextScreen: const Screen(),
+      nextScreen: const AuthScreen(),
       //splashTransition: SplashTransition.scaleTransition,
       animationDuration: const Duration(milliseconds: 1000),
     );

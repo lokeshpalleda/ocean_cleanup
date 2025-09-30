@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ocean_clean/frontpage.dart';
-import 'package:ocean_clean/profile_input_field.dart';
-//import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ocean_clean/pages/question_page.dart';
+import 'package:ocean_clean/widgets/profile_input_field.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});

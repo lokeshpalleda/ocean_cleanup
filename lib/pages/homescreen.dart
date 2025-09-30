@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ocean_clean/card_event_home.dart';
-import 'package:ocean_clean/social_media_row.dart';
-import 'events_card_details.dart';
+import 'package:ocean_clean/pages/card_event_home.dart';
+import 'package:ocean_clean/pages/social_media_row.dart';
+import '../models/events_card_details.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
