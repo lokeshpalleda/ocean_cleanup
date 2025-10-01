@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:ocean_clean/pages/question_page.dart';
-import 'package:ocean_clean/widgets/profile_input_field.dart';
+import 'package:http/http.dart' as http;
+import 'package:ocean_clean/flutter_frontend/pages/question_page.dart';
+import 'package:ocean_clean/flutter_frontend/widgets/profile_input_field.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -15,8 +17,38 @@ class _ProfileState extends State<Profile> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _locationController = TextEditingController();
   String? _selectedEvent;
+
+  // 🔹 Place the function here inside _ProfileState
+  Future<void> submitVolunteer() async {
+    final url = Uri.parse("http://localhost:3000/api/volunteer");
+
+    final response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({
+        "name": _nameController.text.trim(),
+        "phone": _phoneController.text.trim(),
+        "email": _emailController.text.trim(),
+        "option": _selectedEvent,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Volunteer info submitted!")),
+      );
+      _formKey.currentState!.reset();
+      setState(() => _selectedEvent = null);
+      _nameController.clear();
+      _phoneController.clear();
+      _emailController.clear();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: ${response.body}")),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,38 +137,11 @@ class _ProfileState extends State<Profile> {
                         },
                       ),
                     ),
-                    inputField('Location', Icons.location_on, _locationController),
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          try {
-                            await Future.delayed(const Duration(milliseconds: 500));
-                            // await FirebaseFirestore.instance.collection('volunteers').add({
-                            //   'name': _nameController.text.trim(),
-                            //   'phone': _phoneController.text.trim(),
-                            //   'email': _emailController.text.trim(),
-                            //   'event': _selectedEvent,
-                            //   'location': _locationController.text.trim(),
-                            // });
-
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Volunteer info submitted!')),
-                            );
-
-                            _formKey.currentState!.reset();
-                            setState(() {
-                              _selectedEvent = null;
-                            });
-                            _nameController.clear();
-                            _phoneController.clear();
-                            _emailController.clear();
-                            _locationController.clear();
-                          } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Failed to save information')),
-                            );
-                          }
+                          await submitVolunteer();
                         }
                       },
                       child: const Text('Add Volunteer'),

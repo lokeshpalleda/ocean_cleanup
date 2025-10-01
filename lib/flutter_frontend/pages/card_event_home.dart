@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ocean_clean/models/events_card_details.dart';
-import 'package:ocean_clean/pages/eventnum.dart';
+import 'package:ocean_clean/flutter_frontend/models/events_card_details.dart';
+import 'package:ocean_clean/flutter_frontend/pages/eventnum.dart';
 
 class EventCarousel extends StatelessWidget {
   final int currentIndex;

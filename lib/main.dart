@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ocean_clean/splash/splash_screen.dart';
+import 'package:ocean_clean/flutter_frontend/splash/splash_screen.dart';
 
 void main() async {
   

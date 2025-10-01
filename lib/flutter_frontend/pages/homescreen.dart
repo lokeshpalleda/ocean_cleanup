@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ocean_clean/pages/card_event_home.dart';
-import 'package:ocean_clean/pages/social_media_row.dart';
+import 'package:ocean_clean/flutter_frontend/pages/card_event_home.dart';
+import 'package:ocean_clean/flutter_frontend/pages/social_media_row.dart';
 import '../models/events_card_details.dart';
 
 class Home extends StatefulWidget {

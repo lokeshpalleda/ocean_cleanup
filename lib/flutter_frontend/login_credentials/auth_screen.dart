@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:ocean_clean/pages/navigatoin.dart';
+import 'package:ocean_clean/flutter_frontend/pages/navigatoin.dart';
+import 'package:http/http.dart' as http;
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -15,6 +17,63 @@ class _AuthScreenState extends State<AuthScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  Future<void> _submitAuth() async {
+  final email = _emailController.text.trim();
+  final password = _passwordController.text.trim();
+  final name = _nameController.text.trim();
+
+  if (email.isEmpty || password.isEmpty || (!isLogin && name.isEmpty && selectedRole == "User")) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Please fill all fields")),
+    );
+    return;
+  }
+
+  try {
+    final url = isLogin || selectedRole == "Admin"
+        ? Uri.parse("http://localhost:3000/api/auth/login")
+        : Uri.parse("http://localhost:3000/api/auth/signup");
+
+    final body = isLogin || selectedRole == "Admin"
+        ? {
+            "email": email,
+            "password": password,
+            "role": selectedRole,
+          }
+        : {
+            "name": name,
+            "email": email,
+            "password": password,
+            "role": selectedRole,
+          };
+
+    final response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(body),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(isLogin ? "Login Successful" : "Signup Successful")),
+      );
+
+      // Navigate only on success
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => Screen()),
+        (route) => false,
+      );
+    } 
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Failed: $e")),
+    );
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -137,11 +196,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             ),
                           ),
                           onPressed: () {
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(builder: (context) => Screen()),
-                              (route) => false,
-                            );
+                            _submitAuth();
                           },
                           child: Text(
                             (isLogin || selectedRole == "Admin")
