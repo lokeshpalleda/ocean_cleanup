@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ocean_clean/flutter_frontend/splash/splash_screen.dart';
+import 'package:ocean_clean/flutter_frontend/admin_side/pages/navigation_admin.dart';
+import 'package:ocean_clean/flutter_frontend/user_side/splash/splash_screen.dart';
 
 void main() async {
   
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home:Splashscreen(),
+      home: const NavigationAdmin(),
       theme: ThemeData.light(),
       themeMode: ThemeMode.light,
       debugShowCheckedModeBanner: false,

@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:ocean_clean/flutter_frontend/pages/navigatoin.dart';
+import 'package:ocean_clean/flutter_frontend/user_side/pages/navigatoin.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -32,8 +33,8 @@ class _AuthScreenState extends State<AuthScreen> {
 
   try {
     final url = isLogin || selectedRole == "Admin"
-        ? Uri.parse("http://localhost:3000/api/auth/login")
-        : Uri.parse("http://localhost:3000/api/auth/signup");
+        ? Uri.parse("http://192.168.1.39:3000/api/auth/login")
+        : Uri.parse("http://192.168.1.39:3000/api/auth/signup");
 
     final body = isLogin || selectedRole == "Admin"
         ? {
@@ -56,6 +57,10 @@ class _AuthScreenState extends State<AuthScreen> {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
+      final prefs = await SharedPreferences.getInstance();
+  await prefs.setBool('isLoggedIn', true);
+  await prefs.setString('userEmail', email); // optional
+  await prefs.setString('userRole', selectedRole);
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(isLogin ? "Login Successful" : "Signup Successful")),

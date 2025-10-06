@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:ocean_clean/flutter_frontend/models/events_card_details.dart';
-import 'package:ocean_clean/flutter_frontend/pages/eventnum.dart';
+import '../models/event_model.dart';
+import 'eventnum.dart';
 
 class EventCarousel extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onPageChanged;
+  final List<EventModel> events;
 
   const EventCarousel({
     super.key,
     required this.currentIndex,
     required this.onPageChanged,
+    required this.events,
   });
 
   @override
@@ -21,6 +23,7 @@ class EventCarousel extends StatelessWidget {
         onPageChanged: onPageChanged,
         itemCount: events.length,
         itemBuilder: (context, index) {
+          final event = events[index];
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Card(
@@ -39,14 +42,15 @@ class EventCarousel extends StatelessWidget {
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => Eventnum(index: index)),
+                                MaterialPageRoute(builder: (context) => Eventnum(event: event)),
                               );
                             },
-                            child: Image.asset(
-                              events[index].image,
+                            child: Image.network(
+                              event.imageUrl,
                               width: 360,
                               height: 250,
-                              fit: BoxFit.fill,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) => const Icon(Icons.image, size: 80, color: Colors.grey),
                             ),
                           ),
                         ),
@@ -54,12 +58,12 @@ class EventCarousel extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      events[index].name,
+                      event.title,
                       style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      events[index].date,
-                      style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                      event.date,
+                      style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w400),
                     ),
                   ],
                 ),
