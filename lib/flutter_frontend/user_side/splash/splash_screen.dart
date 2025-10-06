@@ -1,6 +1,7 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:ocean_clean/flutter_frontend/admin_side/pages/navigation_admin.dart';
 import 'package:ocean_clean/flutter_frontend/login_credentials/auth_screen.dart';
 import 'package:ocean_clean/flutter_frontend/user_side/pages/navigatoin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,12 +11,17 @@ class Splashscreen extends StatelessWidget {
   Future<Widget> _getNextScreen() async {
     final prefs = await SharedPreferences.getInstance();
     final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
-
+    final role = prefs.getString('userRole') ?? 'User';
     if (isLoggedIn) {
-      return const Screen(); // Main screen
-    } else {
-      return const AuthScreen(); // Login/Signup
-    }
+  if (role == 'Admin') {
+    runApp(const NavigationAdmin());
+  } else {
+    runApp(const Screen());
+  }
+  } else {
+    runApp(const AuthScreen());
+}
+return const Screen();
   }
 
   @override

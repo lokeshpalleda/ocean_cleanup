@@ -26,7 +26,7 @@ class _HomeState extends State<Home> {
   Future<void> fetchEvents() async {
     try {
       final response = await http.get(
-        Uri.parse("http://192.168.1.39:3000/api/admin/history"), // ⚠️ Replace with your IPv4
+        Uri.parse(" https://ocean-cleanup.onrender.com/api/admin/history"), // ⚠️ Replace with your IPv4
       );
       if (response.statusCode == 200) {
         final List data = json.decode(response.body);

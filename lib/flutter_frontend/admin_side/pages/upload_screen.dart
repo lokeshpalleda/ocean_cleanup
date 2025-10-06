@@ -61,7 +61,7 @@ class _UploadScreenState extends State<UploadScreen> {
   }
 
   final uri = Uri.parse(
-      "http://192.168.1.39:3000/api/admin/upload"); // <-- replace with your actual API
+      " https://ocean-cleanup.onrender.com/api/admin/upload"); // <-- replace with your actual API
 
   try {
     var request = http.MultipartRequest('POST', uri);

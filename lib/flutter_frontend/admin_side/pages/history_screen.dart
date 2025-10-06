@@ -16,7 +16,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   bool isLoading = true;
 
   // 🔹 Replace with your backend API URL (use ngrok or PC IP for mobile testing)
-  final String apiUrl = "http://192.168.1.39:3000/api/admin/history";
+  final String apiUrl = " https://ocean-cleanup.onrender.com/api/admin/history";
 
   @override
   void initState() {
